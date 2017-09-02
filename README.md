@@ -1,1 +1,2 @@
-# OOM-Lab-
+# OOM-Lab
+Using starUML and JAVA
