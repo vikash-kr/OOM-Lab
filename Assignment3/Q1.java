@@ -9,67 +9,56 @@ class TestClass {
 
         for (int i = 0; i < T; i++) //Test cases
         {
-            int Rows = s.nextInt();
+        	int Rows = s.nextInt();
             int SeatParRow = s.nextInt();
             int SeatCount = 0;
-
+            int a = s.nextInt();  //TotalAudiance
+            //System.out.println("Matrix "+Rows+SeatParRow +"and Audiance "+ a);
             Audiance[] objAudiance = new Audiance[Rows*SeatParRow];
             //Breaker objBreaker;
 
-            int a = s.nextInt();  //TotalAudiance
+            
             while(a>0){
             	String Type = s.next();
 				String SeatingPrincipal = s.next();
 				String Name = s.next();
-
+				//System.out.println("SeatCount "+ SeatCount+ "With Name "+Type);
+				
 				if(Type.equals("breaker")){
+				        
 						int Experties = s.nextInt();
 						int Holoscope = s.nextInt();
 						Breaker objBreaker = new Breaker(Type, SeatingPrincipal, Name, Experties,  Holoscope);
 						objAudiance[SeatCount] = objBreaker;
 						SeatCount++;
-
+                        //System.out.println("I am in "+ Type);
 				}
 				else if(Type.equals("VIP")){
 					int NoOfEvent= s.nextInt();
-					VIP objVIP = new VIP(Type,  SeatingPrincipal,  Name, NoOfEvent);
+					
 					int[] Date=new int[4];
 					int[] Month= new int[4];
 					int[] Year= new int[4];
 					String[] EventName= new String[4];
 					String[] EventVanue= new String[4];
-					if(NoOfEvent ==1){
-						Date[1] = s.nextInt();
-						Month[1] = s.nextInt();
-						Year[1] = s.nextInt();
-						EventName[1]= s.next();
-						EventVanue[1]= s.next();
-						objVIP.SetData1(Date[1], Month[1], Year[1], EventName[1], EventVanue[1]);
+					for(int k= 0; k<NoOfEvent; k++){
+						Date[k] = s.nextInt();
+						Month[k] = s.nextInt();
+						Year[k] = s.nextInt();
+						EventName[k]= s.next();
+						EventVanue[k]= s.next();
 					}
-					else if(NoOfEvent==2){
-						Date[2] = s.nextInt();
-						Month[2] = s.nextInt();
-						Year[2] = s.nextInt();
-						EventName[2]= s.next();
-						EventVanue[2]= s.next();
-						objVIP.SetData2(Date[2], Month[2], Year[2], EventName[2], EventVanue[2]);
-					}
-					else if(NoOfEvent==3){
-						Date[3] = s.nextInt();
-						Month[3] = s.nextInt();
-						Year[3] = s.nextInt();
-						EventName[3]= s.next();
-						EventVanue[3]= s.next();
-						objVIP.SetData3(Date[3], Month[3], Year[3], EventName[3], EventVanue[3]);
-					}
+					
+					VIP objVIP = new VIP(Type,  SeatingPrincipal,  Name, NoOfEvent, Date, Month, Year, EventName, EventVanue);
 					objAudiance[SeatCount] = objVIP;
 					SeatCount++;
-
+                    //System.out.println("I am in "+ Type);
 				}
 				else if(Type.equals("commoner")){
 					Commoners objCommoners = new Commoners(Type, SeatingPrincipal, Name);
 					objAudiance[SeatCount] = objCommoners;
 					SeatCount++;
+					//System.out.println("I am in "+ Type);
 				}
 				else if(Type.equals("event")){
 					 int Date= s.nextInt();
@@ -80,7 +69,7 @@ class TestClass {
 					EventPro objEvent = new EventPro(Type, SeatingPrincipal, Name, Date, Month, Year, EventName, EventVanue);
 					objAudiance[SeatCount] = objEvent;
 					SeatCount++;
-
+                    //System.out.println("I am in "+ Type);
 				}
 				else if(Type.equals("brand")){
 					String BrandName= s.next();
@@ -88,6 +77,7 @@ class TestClass {
 					BrandPro objBrand = new BrandPro(Type, SeatingPrincipal, Name, BrandName, SalesOfficer);
 					objAudiance[SeatCount] = objBrand;
 					SeatCount++;
+					//System.out.println("I am in "+ Type);
 				}
             	a--;
             }
@@ -104,12 +94,15 @@ class TestClass {
             int IsLog = s.nextInt(); 
             
             //Display
-            for(int j = (SeatCount-1); j<=0; j--){
-                System.out.println("In Display"+ i);
-            	objAudiance[j].Display();
+            SeatCount--;
+            while(SeatCount>=0){
+                //System.out.println("In Display"+ SeatCount);
+            	objAudiance[SeatCount].Display();
+            	SeatCount--;
             }
         }
     }
+    //s.close();
    
 }
 
@@ -118,6 +111,22 @@ class Audiance{
 	String Type;
 	String SeatingPrincipal;
 	String Name;
+	int Experties;
+	int Holoscope;
+	int NoOfEvent;
+	int[] Date=new int[4];
+	int[] Month= new int[4];
+	int[] Year= new int[4];
+	String[] EventName= new String[4];
+	String[] EventVanue = new String[4];
+	int D;
+	int M;
+	int Y;
+	String EventName2;
+	String EventVanue2;
+	String BrandName;
+	String SalesOfficer;
+	
 	public Audiance(String type, String seatingPrincipal, String name) {
 		super();
 		Type = type;
@@ -147,39 +156,29 @@ class VIP extends Audiance{
 
 	private int NoOfEvent;
 
-	public VIP(String type, String seatingPrincipal, String name, int noOfEvent) {
-		super(type, seatingPrincipal, name);
-		NoOfEvent = noOfEvent;
-	}
+//	public VIP(String type, String seatingPrincipal, String name, int noOfEvent) {
+//		super(type, seatingPrincipal, name);
+//		NoOfEvent = noOfEvent;
+//	}
 	private int[] Date=new int[4];
 	private int[] Month= new int[4];
 	private int[] Year= new int[4];
 	private String[] EventName= new String[4];
 	private String[] EventVanue = new String[4];
-	void SetData1(int date, int month, int year, String eventName, String eventVanue){
-				Date[1] = date;
-				Month[1] = month;
-				Year[1] = year;
-				EventName[1] = eventName;
-				EventVanue[1] = eventVanue;
-	}
-	void SetData2(int date, int month, int year, String eventName, String eventVanue){
-				Date[2] = date;
-				Month[2] = month;
-				Year[2] = year;
-				EventName[2] = eventName;
-				EventVanue[2] = eventVanue;
-	}
-	void SetData3(int date, int month, int year, String eventName, String eventVanue){
-				Date[3] = date;
-				Month[3] = month;
-				Year[3] = year;
-				EventName[3] = eventName;
-				EventVanue[3] = eventVanue;
-	}
 	
+	
+	public VIP(String type, String seatingPrincipal, String name, int noOfEvent, int[] date, int[] month, int[] year,
+			String[] eventName, String[] eventVanue) {
+		super(type, seatingPrincipal, name);
+		NoOfEvent = noOfEvent;
+		Date = date;
+		Month = month;
+		Year = year;
+		EventName = eventName;
+		EventVanue = eventVanue;
+	}
 	int i;
-	void Display(){
+	public void Display(){
 		System.out.println(Name);
 		for (i=0; i<NoOfEvent; i++){
 			System.out.println(Date[i]+"-"+Month[i]+"-"+Year[i]+ " " +EventName[i]+" "+ EventVanue[i]);
@@ -198,22 +197,22 @@ class Commoners extends Audiance{
 }
 
 class EventPro extends Audiance{
-	private int Date;
-	private int Month;
-	private int Year;
-	private String EventName;
-	private String EventVanue;
+	private int D;
+	private int M;
+	private int Y;
+	private String EventName2;
+	private String EventVanue2;
 	public EventPro(String type, String seatingPrincipal, String name, int date, int month, int year, String eventName,
 			String eventVanue) {
 		super(type, seatingPrincipal, name);
-		Date = date;
-		Month = month;
-		Year = year;
-		EventName = eventName;
-		EventVanue = eventVanue;
+		D = date;
+		M = month;
+		Y = year;
+		EventName2 = eventName;
+		EventVanue2 = eventVanue;
 	}
-	void Display(){
-		System.out.println(Date+"-"+Month+"-"+Year+" "+ EventName+ " "+ EventVanue);
+	public void Display(){
+		System.out.println(D+"-"+M+"-"+Y+" "+ EventName2+ " "+ EventVanue2);
 	}
 	
 
@@ -226,8 +225,8 @@ class BrandPro extends Audiance{
 		BrandName = brandName;
 		SalesOfficer = salesOfficer;
 	}
-	void Display(){
-		System.out.println(BrandName + " "+ SalesOfficer);
+	public void Display(){
+		System.out.println(Name+" "+BrandName + " "+ SalesOfficer);
 	}
 	
 	
